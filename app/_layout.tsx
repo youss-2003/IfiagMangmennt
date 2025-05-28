@@ -1,29 +1,38 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import '../global.css'
+import { Slot, useRouter, useSegments } from "expo-router";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "./store/authStore";
+import Toast from "react-native-toast-message";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  const segments = useSegments(); // e.g., ["(auth)", "login"]
+  const router = useRouter();
+  const token = useAuthStore((state) => state.token);
+  const [ready, setReady] = useState(false);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  useEffect(() => {
+    const inAuthGroup = segments[0] === "(auth)";
+    const currentRoute = segments.join("/");
+
+    // Define public routes
+    const publicRoutes = ["", "index", "about"];
+    const isPublicRoute = publicRoutes.includes(currentRoute);
+
+    if (!token && !inAuthGroup && !isPublicRoute) {
+      router.replace("/login");
+    } else if (token && inAuthGroup) {
+      router.replace("/profile");
+    }
+
+    setReady(true);
+  }, [token, segments]);
+
+  if (!ready) return null;
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <>
+      <Slot />
+      <Toast />
+    </>
   );
 }
