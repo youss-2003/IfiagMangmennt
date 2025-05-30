@@ -26,7 +26,6 @@ export default function ProfileScreen() {
         <Text className="text-xl font-bold mt-4">
           {user.first_name} {user.last_name}
         </Text>
-        <Text className="text-gray-500">{user.specialty || "Étudiant"}</Text>
       </View>
 
       <View className="bg-white rounded-2xl p-4 mb-6 shadow-sm space-y-3">

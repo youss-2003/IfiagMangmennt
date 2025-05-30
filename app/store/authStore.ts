@@ -7,6 +7,15 @@ interface User {
   full_name: string;
   email: string;
   photo: string | null;
+  phone?: string;
+  birth_date: string;
+  gender: string;
+  birth_place?: string;
+  address?: string;
+  class: string;
+  field: string;
+  enrollment_date: string;
+  description?: string;
   role: string;
   created_at: string;
   updated_at: string;
