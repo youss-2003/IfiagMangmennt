@@ -5,16 +5,16 @@ import { useAuthStore } from "../store/authStore";
 import { LogOut, Settings } from "lucide-react-native";
 
 export default function ProfileScreen() {
-  const { token, user, logout } = useAuthStore();
+  const { access_token, user, logout } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
-    if (!token || !user) {
+    if (!access_token || !user) {
       router.replace("/login");
     }
-  }, [token, user]);
+  }, [access_token, user]);
 
-  if (!token || !user) return null;
+  if (!access_token || !user) return null;
 
   return (
     <ScrollView className="flex-1 bg-[#f5f6ff] px-4 py-8">

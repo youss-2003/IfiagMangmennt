@@ -7,7 +7,7 @@ import Toast from "react-native-toast-message";
 export default function RootLayout() {
   const segments = useSegments(); // e.g., ["(auth)", "login"]
   const router = useRouter();
-  const token = useAuthStore((state) => state.token);
+  const token = useAuthStore((state) => state.access_token);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {

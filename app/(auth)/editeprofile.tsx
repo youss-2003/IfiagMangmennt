@@ -15,7 +15,7 @@ import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 
 export default function EditProfileScreen() {
-    const { user, token, setUser } = useAuthStore();
+    const { user, access_token, setUser } = useAuthStore();
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
@@ -83,7 +83,7 @@ export default function EditProfileScreen() {
         try {
             const response = await axios.put("https://ifiag.pidefood.com/api/auth/profile", formData, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${access_token}`,
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                 },

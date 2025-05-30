@@ -23,33 +23,26 @@ export default function LoginScreen() {
       });
       return;
     }
-
+  
     try {
       setLoading(true);
-
-      // 🔐 Login request
-      const response = await axios.post("http://your-laravel-api.test/api/auth/login", {
+  
+      const response = await axios.post("https://ifiag.pidefood.com/api/auth/login", {
         email,
         password,
       });
-
-      const token = response.data.token;
-      setToken(token);
-
-      // 👤 Fetch user profile with token
-      const profileRes = await axios.get("http://your-laravel-api.test/api/auth/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setUser(profileRes.data);
-
+  
+      const { user, access_token } = response.data.data;
+  
+      // ✅ Save to Zustand
+      setToken(access_token);
+      setUser(user);
+  
       Toast.show({
         type: "success",
         text1: "Login Successful",
       });
-
+  
       router.replace("/profile");
     } catch (error: any) {
       Toast.show({
